@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use iced::{text_input, Align, Column, Element, Text, TextInput};
+use iced::{Align, Column, Element, Length, Row, Text, TextInput, text_input};
 use jwt::{Header, Token, Unverified};
 
 use crate::ui;
@@ -28,8 +28,8 @@ impl State {
                     &*self.jwt_token,
                 ) {
                     Ok(token) => {
-                        self.headers = serde_json::to_string(&token.header()).unwrap();
-                        self.payload = serde_json::to_string(&token.claims()).unwrap();
+                        self.headers = serde_json::to_string_pretty(&token.header()).unwrap();
+                        self.payload = serde_json::to_string_pretty(&token.claims()).unwrap();
                     }
                     Err(err) => println!("{}", err),
                 }
@@ -45,14 +45,20 @@ impl State {
             Message::JWTToken,
         )
         .padding(10)
+        .width(Length::Fill)
         .size(30);
+
         Column::new()
             .padding(20)
             .align_items(Align::Center)
-            .push(Text::new("JWT"))
             .push(text_input)
-            .push(Text::new(&self.headers).size(50))
-            .push(Text::new(&self.payload).size(50))
+            .push(
+                Row::new()
+                    .padding(10)
+                    .width(Length::Fill)
+                    .push(Column::new().push(Text::new("Headers").size(35)).push(Text::new(&self.headers).size(25)))
+                    .push(Column::new().push(Text::new("Payload").size(35)).push(Text::new(&self.payload).size(25))),
+            )
             .into()
     }
 }

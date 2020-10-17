@@ -54,10 +54,9 @@ impl State {
             .padding(20)
             .align_items(Align::Center)
             .push(ui::button(&mut self.now, "Now").on_press(Message::UnixTimeNow))
-            .push(Text::new("Unix Time Conversion."))
             .push(text_input)
-            .push(Text::new(Utc.timestamp(self.unix_time, 0).to_string()).size(50))
-            .push(Text::new(Local.timestamp(self.unix_time, 0).to_string()).size(50))
+            .push(Text::new(Utc.timestamp(self.unix_time, 0).to_string()).size(25))
+            .push(Text::new(Local.timestamp(self.unix_time, 0).to_string()).size(25))
             .into()
     }
 }

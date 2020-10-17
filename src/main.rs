@@ -1,10 +1,10 @@
-use iced::{button, Align, Column, Element, Row, Sandbox, Settings, Text};
+use iced::{Align, Column, Element, Length, Radio, Row, Sandbox, Settings, Text};
 
 mod jwt;
 mod ui;
 mod unix_time;
 
-pub fn main() {
+pub fn main() -> iced::Result {
     DevTools::run(Settings::default())
 }
 
@@ -15,7 +15,7 @@ enum Message {
     JWT(jwt::Message),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum SelectedPage {
     Unix,
     JWT,
@@ -28,16 +28,10 @@ impl Default for SelectedPage {
 }
 
 #[derive(Default)]
-struct Page<T: Default> {
-    page: T,
-    button: button::State,
-}
-
-#[derive(Default)]
 struct DevTools {
     active_page: SelectedPage,
-    unix: Page<unix_time::State>,
-    jwt: Page<jwt::State>,
+    unix: unix_time::State,
+    jwt: jwt::State,
 }
 
 impl Sandbox for DevTools {
@@ -48,7 +42,7 @@ impl Sandbox for DevTools {
     }
 
     fn title(&self) -> String {
-        String::from("devtools")
+        String::from("Dev Tools")
     }
 
     fn update(&mut self, message: Message) {
@@ -57,41 +51,44 @@ impl Sandbox for DevTools {
                 self.active_page = page;
             }
             Message::Unix(message) => {
-                self.unix.page.update(message);
+                self.unix.update(message);
             }
             Message::JWT(message) => {
-                self.jwt.page.update(message);
+                self.jwt.update(message);
             }
         }
     }
 
     fn view(&mut self) -> Element<Message> {
         let active_window = match self.active_page {
-            SelectedPage::Unix => self.unix.page.view().map(Message::Unix),
-            SelectedPage::JWT => self.jwt.page.view().map(Message::JWT),
+            SelectedPage::Unix => self.unix.view().map(Message::Unix),
+            SelectedPage::JWT => self.jwt.view().map(Message::JWT),
         };
 
-        let title_bar = Column::new()
-            .padding(20)
-            .align_items(Align::Center)
-            .push(Text::new("Dev Tools"));
+        let title_bar = Text::new("Dev Tools").width(Length::Shrink).size(50);
 
         let navigation = Column::new()
-            .push(
-                ui::button(&mut self.unix.button, "Unix time")
-                    .on_press(Message::ChangeTab(SelectedPage::Unix)),
-            )
-            .push(
-                ui::button(&mut self.jwt.button, "JWT")
-                    .on_press(Message::ChangeTab(SelectedPage::JWT)),
-            );
-
-        let main_view = Row::new().push(active_window);
+            .padding(20)
+            .spacing(20)
+            .push(Radio::new(
+                SelectedPage::Unix,
+                "Unix time",
+                Some(self.active_page),
+                Message::ChangeTab,
+            ))
+            .push(Radio::new(
+                SelectedPage::JWT,
+                "JWT",
+                Some(self.active_page),
+                Message::ChangeTab,
+            ));
 
         Column::new()
+            .padding(20)
+            .spacing(20)
+            .align_items(Align::Center)
             .push(title_bar)
-            .push(navigation)
-            .push(main_view)
+            .push(Row::new().push(navigation).push(active_window))
             .into()
     }
 }
