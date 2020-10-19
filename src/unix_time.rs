@@ -43,6 +43,8 @@ impl State {
             }
             Message::UnixTimeNow => {
                 self.unix_time = Utc::now().timestamp();
+                self.utc_time = Utc.timestamp(self.unix_time, 0).to_string();
+                self.local_time = Local.timestamp(self.unix_time, 0).to_string();
             }
         }
     }
