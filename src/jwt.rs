@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use iced::{Align, Column, Element, Length, Row, Text, TextInput, text_input};
+use iced::{text_input, Align, Column, Element, Length, Row, Text, TextInput};
 use jwt::{Header, Token, Unverified};
 
 use crate::ui;
@@ -54,10 +54,20 @@ impl State {
             .push(text_input)
             .push(
                 Row::new()
-                    .padding(10)
+                    .padding(20)
                     .width(Length::Fill)
-                    .push(Column::new().push(Text::new("Headers").size(35)).push(Text::new(&self.headers).size(25)))
-                    .push(Column::new().push(Text::new("Payload").size(35)).push(Text::new(&self.payload).size(25))),
+                    .push(
+                        Column::new()
+                            .padding(20)
+                            .push(Text::new("Headers").size(35))
+                            .push(Text::new(&self.headers).size(25)),
+                    )
+                    .push(
+                        Column::new()
+                            .padding(20)
+                            .push(Text::new("Payload").size(35))
+                            .push(Text::new(&self.payload).size(25)),
+                    ),
             )
             .into()
     }

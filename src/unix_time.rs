@@ -11,6 +11,8 @@ pub enum Message {
 
 pub struct State {
     unix_time: i64,
+    utc_time: String,
+    local_time: String,
     unix_state: text_input::State,
     now: button::State,
 }
@@ -18,7 +20,9 @@ pub struct State {
 impl Default for State {
     fn default() -> Self {
         Self {
-            unix_time: 0,
+            unix_time: Default::default(),
+            utc_time: Default::default(),
+            local_time: Default::default(),
             unix_state: text_input::State::new(),
             now: button::State::new(),
         }
@@ -32,6 +36,8 @@ impl State {
                 if let Ok(v) = new_value.parse() {
                     if v >= 0 {
                         self.unix_time = v;
+                        self.utc_time = Utc.timestamp(self.unix_time, 0).to_string();
+                        self.local_time = Local.timestamp(self.unix_time, 0).to_string();
                     }
                 }
             }
@@ -55,8 +61,8 @@ impl State {
             .align_items(Align::Center)
             .push(ui::button(&mut self.now, "Now").on_press(Message::UnixTimeNow))
             .push(text_input)
-            .push(Text::new(Utc.timestamp(self.unix_time, 0).to_string()).size(25))
-            .push(Text::new(Local.timestamp(self.unix_time, 0).to_string()).size(25))
+            .push(Text::new(self.utc_time.to_owned()).size(25))
+            .push(Text::new(self.local_time.to_owned()).size(25))
             .into()
     }
 }
