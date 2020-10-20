@@ -8,7 +8,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  build_linux:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -16,8 +16,34 @@ jobs:
       run: cargo build --verbose --release
     - name: Run tests
       run: cargo test --verbose --release
-    - name: Archive todos binary
+    - name: Archive devtools binary
       uses: actions/upload-artifact@v1
       with:
-        name: todos-x86_64-unknown-linux-gnu
+        name: devtools-x86_64-unknown-linux-gnu
+        path: target/release/devtools
+
+  build_windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build devtools binary
+      run: cargo build --verbose --release
+    - name: Archive devtools binary
+      uses: actions/upload-artifact@v1
+      with:
+        name: devtools-x86_64-pc-windows-msvc
+        path: target/release/devtools.exe
+
+  build_macos:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build devtools binary
+      env:
+        MACOSX_DEPLOYMENT_TARGET: 10.14
+      run: cargo build --verbose --release
+    - name: Archive devtools binary
+      uses: actions/upload-artifact@v1
+      with:
+        name: devtools-x86_64-apple-darwin
         path: target/release/devtools
