@@ -12,3 +12,6 @@ serde_json = { version = "1.0", default-features=false }
 
 [features]
 default = []
+
+[profile.release]
+lto = true
