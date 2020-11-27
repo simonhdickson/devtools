@@ -9,30 +9,26 @@ struct Opts {
 
 #[derive(Clap)]
 enum SubCommand {
-    Base64(Base64),
+    Base64{
+        #[clap(short)]
+        decode: bool,
+        
+        input: String,
+    },
 }
-
-#[derive(Clap)]
-struct Base64 {
-    #[clap(short)]
-    decode: bool,
-    
-    input: String,
-}
-
 
 fn main() {
     let opts: Opts = Opts::parse();
 
     match opts.subcmd {
-        SubCommand::Base64(params) => {
+        SubCommand::Base64 { decode, input } => {
             let mut m = devtools_core::Base64::default();
 
-            if params.decode {
-                m.set_base64(&params.input).unwrap();
+            if decode {
+                m.set_base64(&input).unwrap();
                 println!("{}", m.get_plain_text());
             } else {
-                m.set_plain_text(&params.input);
+                m.set_plain_text(&input);
                 println!("{}", m.get_base64());
             }
         }
