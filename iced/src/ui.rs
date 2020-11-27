@@ -1,3 +1,5 @@
+pub mod style;
+
 use iced::{button, Button, HorizontalAlignment, Text};
 
 pub fn button<'a, Message>(state: &'a mut button::State, label: &str) -> Button<'a, Message>

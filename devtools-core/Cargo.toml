@@ -1,0 +1,12 @@
+[package]
+name = "devtools_core"
+version = "0.1.0"
+authors = ["Simon Dickson <simonhdickson@users.noreply.github.com>"]
+edition = "2018"
+
+[dependencies]
+base64 = "0.13"
+chrono = "0.4"
+thiserror = "1.0"
+jwt = { version = "0.11", default-features = false }
+serde_json = { version = "1.0", default-features = false }

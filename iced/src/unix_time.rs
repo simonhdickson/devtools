@@ -1,7 +1,7 @@
 use chrono::{Local, TimeZone, Utc};
-use iced::{button, text_input, Align, Column, Element, Text, TextInput};
+use iced::{button, text_input, Align, Column, Container, Element, Length, Text, TextInput};
 
-use crate::ui;
+use crate::ui::{self, style::Theme};
 
 #[derive(Debug, Clone)]
 pub enum Message {
@@ -49,7 +49,7 @@ impl State {
         }
     }
 
-    pub fn view(&mut self) -> Element<Message> {
+    pub fn view(&mut self, theme: Theme) -> Element<Message> {
         let text_input = TextInput::new(
             &mut self.unix_state,
             "",
@@ -57,14 +57,28 @@ impl State {
             Message::UnixTimeChanged,
         )
         .padding(10)
-        .size(30);
-        Column::new()
+        .size(30)
+        .style(theme);
+
+        let content = Column::new()
             .padding(20)
+            .spacing(20)
             .align_items(Align::Center)
-            .push(ui::button(&mut self.now, "Now").on_press(Message::UnixTimeNow))
+            .push(
+                ui::button(&mut self.now, "Now")
+                    .on_press(Message::UnixTimeNow)
+                    .style(theme),
+            )
             .push(text_input)
             .push(Text::new(self.utc_time.to_owned()).size(25))
-            .push(Text::new(self.local_time.to_owned()).size(25))
+            .push(Text::new(self.local_time.to_owned()).size(25));
+
+        Container::new(content)
+            .width(Length::Fill)
+            .height(Length::Fill)
+            .center_x()
+            .align_y(Align::Start)
+            .style(theme)
             .into()
     }
 }
