@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <requires lib="libhandy" version="0.0"/>
+  <object class="GtkTreeStore" id="instances_store">
+    <columns>
+      <!-- column-name url -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkEntryCompletion" id="entrycompletion1">
+    <property name="model">instances_store</property>
+    <property name="text_column">0</property>
+    <property name="inline_completion">True</property>
+    <child>
+      <object class="GtkCellRendererText" />
+      <attributes>
+        <attribute name="text">0</attribute>
+      </attributes>
+    </child>
+  </object>
+  <object class="HdyColumn" id="login">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="maximum_width">450</property>
+    <property name="linear_growth_width">450</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="valign">center</property>
+        <property name="border_width">18</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">12</property>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="pixel_size">128</property>
+                <property name="icon_name">@app-id@-symbolic</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Welcome to Read It Later</property>
+                <property name="justify">center</property>
+                <property name="wrap">True</property>
+                <property name="ellipsize">end</property>
+                <property name="lines">2</property>
+                <style>
+                  <class name="title-label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Please sign in using your Wallabag instance information</property>
+                <property name="justify">center</property>
+                <property name="wrap">True</property>
+                <property name="ellipsize">end</property>
+                <property name="lines">2</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="padding">30</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkListBox" id="entries_listbox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="selection_mode">none</property>
+            <child>
+              <object class="HdyActionRow">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="activatable">False</property>
+                <property name="title" translatable="yes">Instance URL</property>
+                <child type="action">
+                  <object class="GtkEntry" id="instance_entry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="completion">entrycompletion1</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="HdyActionRow">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="title" translatable="yes">Client ID</property>
+                <child type="action">
+                  <object class="GtkEntry" id="client_id_entry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="HdyActionRow">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="title" translatable="yes">Client Secret</property>
+                <child type="action">
+                  <object class="GtkEntry" id="client_secret_entry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="visibility">False</property>
+                    <property name="input_purpose">password</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="HdyActionRow">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="title" translatable="yes">Username</property>
+                <child type="action">
+                  <object class="GtkEntry" id="username_entry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="HdyActionRow">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="title" translatable="yes">Password</property>
+                <child type="action">
+                  <object class="GtkEntry" id="password_entry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="visibility">False</property>
+                    <property name="input_purpose">password</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <style>
+              <class name="frame"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="login_button">
+            <property name="label" translatable="yes">Login</property>
+            <property name="width_request">110</property>
+            <property name="height_request">36</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="can_default">True</property>
+            <property name="halign">end</property>
+            <property name="valign">start</property>
+            <style>
+              <class name="suggested-action"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="padding">24</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
+

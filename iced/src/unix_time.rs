@@ -1,4 +1,4 @@
-use chrono::{Local, TimeZone, Utc};
+use devtools_core::UnixTime;
 use iced::{button, text_input, Align, Column, Container, Element, Length, Text, TextInput};
 
 use crate::ui::{self, style::Theme};
@@ -10,9 +10,7 @@ pub enum Message {
 }
 
 pub struct State {
-    unix_time: i64,
-    utc_time: String,
-    local_time: String,
+    unix_time: UnixTime,
     unix_state: text_input::State,
     now: button::State,
 }
@@ -21,8 +19,6 @@ impl Default for State {
     fn default() -> Self {
         Self {
             unix_time: Default::default(),
-            utc_time: Default::default(),
-            local_time: Default::default(),
             unix_state: text_input::State::new(),
             now: button::State::new(),
         }
@@ -32,20 +28,11 @@ impl Default for State {
 impl State {
     pub fn update(&mut self, message: Message) {
         match message {
-            Message::UnixTimeChanged(new_value) => {
-                if let Ok(v) = new_value.parse() {
-                    if v >= 0 {
-                        self.unix_time = v;
-                        self.utc_time = Utc.timestamp(self.unix_time, 0).to_string();
-                        self.local_time = Local.timestamp(self.unix_time, 0).to_string();
-                    }
-                }
-            }
-            Message::UnixTimeNow => {
-                self.unix_time = Utc::now().timestamp();
-                self.utc_time = Utc.timestamp(self.unix_time, 0).to_string();
-                self.local_time = Local.timestamp(self.unix_time, 0).to_string();
-            }
+            Message::UnixTimeChanged(new_value) => match self.unix_time.set_unix_time_string(&new_value) {
+                Ok(()) => (),
+                Err(err) => println!("{:#?}", err),
+            },
+            Message::UnixTimeNow => self.unix_time.set_unix_time_to_now(),
         }
     }
 
@@ -53,7 +40,7 @@ impl State {
         let text_input = TextInput::new(
             &mut self.unix_state,
             "",
-            &*self.unix_time.to_string(),
+            &self.unix_time.get_unix_time().to_string(),
             Message::UnixTimeChanged,
         )
         .padding(10)
@@ -70,8 +57,8 @@ impl State {
                     .style(theme),
             )
             .push(text_input)
-            .push(Text::new(self.utc_time.to_owned()).size(25))
-            .push(Text::new(self.local_time.to_owned()).size(25));
+            .push(Text::new(self.unix_time.get_utc_time().to_owned()).size(25))
+            .push(Text::new(self.unix_time.get_local_time().to_owned()).size(25));
 
         Container::new(content)
             .width(Length::Fill)

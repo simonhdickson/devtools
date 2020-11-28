@@ -1,0 +1,4 @@
+data/com.simonhdickson.devtools.desktop.in
+data/com.simonhdickson.devtools.appdata.xml.in
+data/com.simonhdickson.devtools.gschema.xml
+src/window.ui

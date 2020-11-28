@@ -1,12 +1,11 @@
 [package]
-name = "devtools"
+name = "devtools-iced"
 version = "0.1.0"
 authors = ["Simon Dickson <simonhdickson@users.noreply.github.com>"]
 edition = "2018"
 
 [dependencies]
 devtools_core = { path = "../devtools-core" }
-chrono = "0.4"
 iced = { git = "https://github.com/simonhdickson/iced.git", default-features = false, features = ["wgpu"] }
 
 [[bin]]
