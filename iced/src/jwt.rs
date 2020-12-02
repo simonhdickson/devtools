@@ -1,4 +1,4 @@
-use devtools_core::Jwt;
+use devtools_core::jwt::Jwt;
 use iced::{text_input, Align, Column, Container, Element, Length, Text, TextInput};
 
 use crate::ui::style::Theme;

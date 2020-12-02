@@ -1,4 +1,4 @@
-use devtools_core::UnixTime;
+use devtools_core::unix_time;
 use iced::{button, text_input, Align, Column, Container, Element, Length, Text, TextInput};
 
 use crate::ui::{self, style::Theme};
@@ -10,7 +10,7 @@ pub enum Message {
 }
 
 pub struct State {
-    unix_time: UnixTime,
+    unix_time: unix_time::UnixTime,
     unix_state: text_input::State,
     now: button::State,
 }
