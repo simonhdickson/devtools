@@ -15,7 +15,7 @@ pub struct State {
     to_base64_state: text_input::State,
 }
 
-impl Default for State  {
+impl Default for State {
     fn default() -> Self {
         let mut vm = encoding::create();
         vm.set_kind(encoding::Kind::Base64);
@@ -33,7 +33,6 @@ impl State {
         match message {
             Message::SetBase64(new_value) => self.vm.set_encoded_text(&new_value),
             Message::SetPlainText(new_value) => self.vm.set_plain_text(&new_value),
-            
         }
     }
 

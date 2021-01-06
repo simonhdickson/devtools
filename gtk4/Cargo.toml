@@ -1,0 +1,9 @@
+[package]
+name = "gtk4"
+version = "0.1.0"
+authors = ["Simon Dickson <simonhdickson@users.noreply.github.com>"]
+edition = "2018"
+
+[dependencies]
+devtools_core = { path = "../devtools-core" }
+gtk = { package = "gtk4", git = "https://github.com/gtk-rs/gtk4-rs" }

@@ -1,4 +1,4 @@
-use devtools_core::unix_time;
+use devtools_core::unix_time::{self, ViewModel};
 use iced::{button, text_input, Align, Column, Container, Element, Length, Text, TextInput};
 
 use crate::ui::{self, style::Theme};
@@ -10,7 +10,7 @@ pub enum Message {
 }
 
 pub struct State {
-    unix_time: unix_time::UnixTime,
+    unix_time: unix_time::ViewModelImpl,
     unix_state: text_input::State,
     now: button::State,
 }
@@ -18,7 +18,7 @@ pub struct State {
 impl Default for State {
     fn default() -> Self {
         Self {
-            unix_time: Default::default(),
+            unix_time: unix_time::create(),
             unix_state: text_input::State::new(),
             now: button::State::new(),
         }
@@ -28,10 +28,7 @@ impl Default for State {
 impl State {
     pub fn update(&mut self, message: Message) {
         match message {
-            Message::UnixTimeChanged(new_value) => match self.unix_time.set_unix_time_string(&new_value) {
-                Ok(()) => (),
-                Err(err) => println!("{:#?}", err),
-            },
+            Message::UnixTimeChanged(new_value) => self.unix_time.set_unix_time_string(new_value),
             Message::UnixTimeNow => self.unix_time.set_unix_time_to_now(),
         }
     }

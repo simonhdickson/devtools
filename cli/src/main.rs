@@ -1,7 +1,7 @@
 use std::io::Read;
 
 use clap::Clap;
-use devtools_core::encoding::{self, ViewModel};
+use devtools_core::encoding::{self, Kind, ViewModel};
 
 #[derive(Clap)]
 #[clap(
@@ -36,11 +36,11 @@ fn main() {
 
     match opts.subcmd {
         SubCommand::Base64 { decode, input } => {
-            let mut m = devtools_core::encoding::create();
+            let mut m = encoding::create();
 
-            m.set_kind(encoding::Kind::Base64);
+            m.set_kind(Kind::Base64);
 
-            let input = input.unwrap_or_else(||read_stdin());
+            let input = input.unwrap_or_else(|| read_stdin());
 
             if decode {
                 m.set_encoded_text(&input);
