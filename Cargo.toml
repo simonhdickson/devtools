@@ -2,6 +2,6 @@
 members = [
     "cli",
     "devtools-core",
-    "gtk",
+    "gtk4",
     "iced",
 ]

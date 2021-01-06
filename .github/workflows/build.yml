@@ -13,26 +13,26 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build
-      run: cargo build --verbose --release
+      run: cargo build --verbose --release --bin iced
     - name: Run tests
       run: cargo test --verbose --release
     - name: Archive devtools binary
       uses: actions/upload-artifact@v1
       with:
         name: devtools-x86_64-unknown-linux-gnu
-        path: target/release/devtools
+        path: target/release/iced
 
   build_windows:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
     - name: Build devtools binary
-      run: cargo build --verbose --release
+      run: cargo build --verbose --release --bin iced
     - name: Archive devtools binary
       uses: actions/upload-artifact@v1
       with:
         name: devtools-x86_64-pc-windows-msvc
-        path: target/release/devtools.exe
+        path: target/release/iced.exe
 
   build_macos:
     runs-on: macos-latest
@@ -41,9 +41,9 @@ jobs:
     - name: Build devtools binary
       env:
         MACOSX_DEPLOYMENT_TARGET: 10.14
-      run: cargo build --verbose --release
+      run: cargo build --verbose --release --bin iced
     - name: Archive devtools binary
       uses: actions/upload-artifact@v1
       with:
         name: devtools-x86_64-apple-darwin
-        path: target/release/devtools
+        path: target/release/iced

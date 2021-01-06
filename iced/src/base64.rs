@@ -1,4 +1,4 @@
-use devtools_core::Base64;
+use devtools_core::encoding::{self, ViewModel};
 use iced::{text_input, Align, Column, Container, Element, Length, Text, TextInput};
 
 use crate::ui::style::Theme;
@@ -10,15 +10,18 @@ pub enum Message {
 }
 
 pub struct State {
-    base64: Base64,
+    vm: encoding::ViewModelImpl,
     from_base64_state: text_input::State,
     to_base64_state: text_input::State,
 }
 
 impl Default for State {
     fn default() -> Self {
+        let mut vm = encoding::create();
+        vm.set_kind(encoding::Kind::Base64);
+
         Self {
-            base64: Default::default(),
+            vm,
             from_base64_state: text_input::State::new(),
             to_base64_state: text_input::State::new(),
         }
@@ -28,13 +31,8 @@ impl Default for State {
 impl State {
     pub fn update(&mut self, message: Message) {
         match message {
-            Message::SetBase64(new_value) => match self.base64.set_base64(&new_value) {
-                Ok(()) => (),
-                Err(err) => println!("{:#?}", err),
-            },
-            Message::SetPlainText(new_value) => {
-                self.base64.set_plain_text(&new_value);
-            }
+            Message::SetBase64(new_value) => self.vm.set_encoded_text(&new_value),
+            Message::SetPlainText(new_value) => self.vm.set_plain_text(&new_value),
         }
     }
 
@@ -42,7 +40,7 @@ impl State {
         let to_input = TextInput::new(
             &mut self.to_base64_state,
             "",
-            &*self.base64.get_plain_text(),
+            &*self.vm.plain_text().unwrap(),
             Message::SetPlainText,
         )
         .padding(10)
@@ -52,7 +50,7 @@ impl State {
         let from_input = TextInput::new(
             &mut self.from_base64_state,
             "",
-            &*self.base64.get_base64(),
+            &*self.vm.encoded_text().unwrap(),
             Message::SetBase64,
         )
         .padding(10)

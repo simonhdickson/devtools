@@ -1,45 +1,84 @@
 use chrono::{Local, TimeZone, Utc};
 use thiserror::Error;
 
-#[derive(Default)]
-pub struct UnixTime {
-    unix_time: i64,
-    utc_time: String,
-    local_time: String,
-}
-
 #[derive(Error, Debug)]
 pub enum SetUnixTimeString {
     #[error("failed to parse unix time")]
     Parse(#[from] std::num::ParseIntError),
 }
 
-impl UnixTime {
-    pub fn set_unix_time(&mut self, v: i64) {
-        self.unix_time = v;
-        self.utc_time = Utc.timestamp(self.unix_time, 0).to_string();
-        self.local_time = Local.timestamp(self.unix_time, 0).to_string();
+pub trait ViewModel {
+    fn set_unix_time(&mut self, v: i64);
+
+    fn set_unix_time_string(&mut self, s: String);
+
+    fn set_unix_time_to_now(&mut self);
+
+    fn get_unix_time(&self) -> i64;
+
+    fn get_utc_time(&self) -> String;
+
+    fn get_local_time(&self) -> String;
+}
+
+#[derive(Clone)]
+pub enum Content {
+    UnixTime(i64),
+    UtcTime(String),
+}
+
+#[derive(Default)]
+pub struct ViewModelImpl {
+    content: Option<Content>,
+}
+
+pub fn create() -> ViewModelImpl {
+    ViewModelImpl::default()
+}
+
+impl ViewModel for ViewModelImpl {
+    fn set_unix_time(&mut self, v: i64) {
+        self.content = Some(Content::UnixTime(v));
     }
 
-    pub fn set_unix_time_string(&mut self, s: &str) -> Result<(), SetUnixTimeString> {
-        let new_time = s.parse()?;
-        self.set_unix_time(new_time);
-        Ok(())
+    fn set_unix_time_string(&mut self, s: String) {
+        self.content = Some(Content::UtcTime(s));
     }
 
-    pub fn set_unix_time_to_now(&mut self) {
+    fn set_unix_time_to_now(&mut self) {
         self.set_unix_time(Utc::now().timestamp())
     }
 
-    pub fn get_unix_time(&self) -> i64 {
-        self.unix_time
+    fn get_unix_time(&self) -> i64 {
+        match &self.content {
+            Some(Content::UnixTime(unix_time)) => *unix_time,
+            Some(Content::UtcTime(s)) => {
+                let time = s.parse().unwrap();
+                time
+            }
+            None => 0,
+        }
     }
 
-    pub fn get_utc_time(&self) -> &str {
-        &self.utc_time
+    fn get_utc_time(&self) -> String {
+        match &self.content {
+            Some(Content::UnixTime(unix_time)) => Utc.timestamp(*unix_time, 0).to_string(),
+            Some(Content::UtcTime(s)) => {
+                let time = s.parse().unwrap();
+                Utc.timestamp(time, 0).to_string()
+            }
+            None => "".to_owned(),
+        }
     }
 
-    pub fn get_local_time(&self) -> &str {
-        &self.local_time
+    fn get_local_time(&self) -> String {
+        match &self.content {
+            Some(Content::UnixTime(unix_time)) => Local.timestamp(*unix_time, 0).to_string(),
+            Some(Content::UtcTime(s)) => {
+                let time = s.parse().unwrap();
+                Local.timestamp(time, 0).to_string()
+            }
+            None => "".to_owned(),
+        }
     }
 }

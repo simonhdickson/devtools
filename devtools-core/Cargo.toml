@@ -5,6 +5,7 @@ authors = ["Simon Dickson <simonhdickson@users.noreply.github.com>"]
 edition = "2018"
 
 [dependencies]
+base32 = "0.4"
 base64 = "0.13"
 chrono = "0.4"
 thiserror = "1.0"
