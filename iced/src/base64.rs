@@ -1,4 +1,4 @@
-use devtools_core::encoding::{self, ViewModel};
+use devtools_core::encoding::{self, EncodingViewModel};
 use iced::{text_input, Align, Column, Container, Element, Length, Text, TextInput};
 
 use crate::ui::style::Theme;

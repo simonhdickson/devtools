@@ -1,4 +1,4 @@
-use devtools_core::unix_time::{self, ViewModel};
+use devtools_core::unix_time::{self, UnixTimeViewModel};
 use iced::{button, text_input, Align, Column, Container, Element, Length, Text, TextInput};
 
 use crate::ui::{self, style::Theme};
@@ -54,7 +54,7 @@ impl State {
                     .style(theme),
             )
             .push(text_input)
-            .push(Text::new(self.unix_time.get_utc_time().to_owned()).size(25))
+            .push(Text::new(self.unix_time.get_utc_time().unwrap().to_owned()).size(25))
             .push(Text::new(self.unix_time.get_local_time().to_owned()).size(25));
 
         Container::new(content)

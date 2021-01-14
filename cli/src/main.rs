@@ -1,7 +1,7 @@
 use std::io::Read;
 
 use clap::Clap;
-use devtools_core::encoding::{self, Kind, ViewModel};
+use devtools_core::encoding::{self, Kind, EncodingViewModel};
 
 #[derive(Clap)]
 #[clap(

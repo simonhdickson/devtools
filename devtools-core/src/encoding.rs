@@ -30,7 +30,7 @@ impl Default for Kind {
     }
 }
 
-pub trait ViewModel {
+pub trait EncodingViewModel {
     fn set_encoded_text(&mut self, encoded_text: &str);
 
     fn set_plain_text(&mut self, plain_text: &str);
@@ -59,7 +59,7 @@ pub struct ViewModelImpl {
     kind: Kind,
 }
 
-impl ViewModel for ViewModelImpl {
+impl EncodingViewModel for ViewModelImpl {
     fn set_kind(&mut self, kind: Kind) {
         self.kind = kind;
     }
